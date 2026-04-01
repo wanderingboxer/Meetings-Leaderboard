@@ -6,25 +6,28 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
-app.use(
-  pinoHttp({
-    logger,
-    serializers: {
-      req(req) {
-        return {
-          id: req.id,
-          method: req.method,
-          url: req.url?.split("?")[0],
-        };
-      },
-      res(res) {
-        return {
-          statusCode: res.statusCode,
-        };
-      },
+// pino-http uses a CJS `export =` declaration which TypeScript's bundler
+// moduleResolution doesn't fully interop with via default imports.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const pinoHttpMiddleware = (pinoHttp as any)({
+  logger,
+  serializers: {
+    req(req: { id: unknown; method: string; url?: string }) {
+      return {
+        id: req.id,
+        method: req.method,
+        url: req.url?.split("?")[0],
+      };
     },
-  }),
-);
+    res(res: { statusCode: number }) {
+      return {
+        statusCode: res.statusCode,
+      };
+    },
+  },
+});
+
+app.use(pinoHttpMiddleware);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
