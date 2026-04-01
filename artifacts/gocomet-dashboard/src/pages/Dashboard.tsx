@@ -55,9 +55,23 @@ function getDirectGifUrl(url: string): string {
   if (!url) return "";
   if (url.includes("drive.google.com")) {
     const id = extractDriveId(url);
-    if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
+    if (id) return `https://lh3.googleusercontent.com/d/${id}`;
   }
   return url;
+}
+
+function getDriveFallbackUrl(src: string): string {
+  if (src.includes("lh3.googleusercontent.com/d/")) {
+    const id = src.split("/d/")[1];
+    if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
+  }
+  return "";
+}
+
+function handleGifError(e: React.SyntheticEvent<HTMLImageElement>) {
+  const img = e.currentTarget;
+  const fallback = getDriveFallbackUrl(img.src);
+  if (fallback) img.src = fallback;
 }
 
 const BAR_COLORS = [
@@ -432,6 +446,7 @@ export default function Dashboard() {
           <img
             src={fullScreenGif}
             alt="Leader celebration"
+            onError={handleGifError}
             style={{
               width: "100%",
               height: "100%",
@@ -614,6 +629,7 @@ export default function Dashboard() {
                       <img
                         src={top1GifUrl}
                         alt={top1.name}
+                        onError={handleGifError}
                         style={{ width: "100%", height: "100%", objectFit: "cover" }}
                       />
                     ) : (
