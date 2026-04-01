@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const LEADERBOARD_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaQ3nxjerGzxpDVYGgyr3VJq6iqMTvP1Ox0[…]_Zxvp-qXwzXBV7RugTS/pub?gid=1575208426&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaQ3nxjerGzxpDVYGgyr3VJq6iqMTvP1Ox0tAHCCryLxMFNG-m_AU2r3zZD_Zxvp-qXwzXBV7RugTS/pub?gid=1575208426&single=true&output=csv";
 const PIPELINE_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaQ3nxjerGzxpDVYGgyr3VJq6iqMTvP1Ox0[…]_AU2r3zZD_Zxvp-qXwzXBV7RugTS/pub?gid=0&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaQ3nxjerGzxpDVYGgyr3VJq6iqMTvP1Ox0tAHCCryLxMFNG-m_AU2r3zZD_Zxvp-qXwzXBV7RugTS/pub?gid=0&single=true&output=csv";
 
 const REFRESH_INTERVAL = 30000;
 
@@ -352,11 +352,12 @@ export default function Dashboard() {
   const NAV_H = 64;
   const PADDING = 18;
   const CONTENT_H = TV_H - NAV_H - PADDING * 2;
-  const LEFT_W = TV_W * 0.6 - PADDING * 1.5;
-  const RIGHT_W = TV_W * 0.4 - PADDING * 1.5;
+  const LEFT_W = TV_W * 0.68 - PADDING * 1.5;
 
-  const TOP1_BANNER_H = top1 ? 148 : 0;
-  const TABLE_H = CONTENT_H - TOP1_BANNER_H - 44;
+  const TOP1_BANNER_H = top1 ? 192 : 0;
+  const PANEL_HEADER_H = 60;
+  const PANEL_FOOTER_H = 36;
+  const TABLE_H = CONTENT_H - TOP1_BANNER_H - PANEL_HEADER_H - PANEL_FOOTER_H;
 
   return (
     <>
@@ -512,19 +513,20 @@ export default function Dashboard() {
               {/* panel header */}
               <div
                 style={{
-                  borderTop: "3px solid #FF6B35",
-                  padding: "14px 24px 12px",
+                  borderTop: "4px solid #FF6B35",
+                  padding: "14px 32px 12px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
                   borderBottom: "1px solid #F0F0F0",
                   flexShrink: 0,
+                  height: PANEL_HEADER_H,
                 }}
               >
-                <span style={{ fontWeight: 800, fontSize: 18, color: "#0A1F44" }}>
+                <span style={{ fontWeight: 800, fontSize: 26, color: "#0A1F44" }}>
                   Meetings Leaderboard
                 </span>
-                <span style={{ color: "#9CA3AF", fontSize: 13 }}>
+                <span style={{ color: "#9CA3AF", fontSize: 16 }}>
                   Last updated: {formatTime(leaderboardUpdated)}
                 </span>
               </div>
@@ -536,10 +538,10 @@ export default function Dashboard() {
                   style={{
                     position: "relative",
                     background: "linear-gradient(135deg, #0A1F44 0%, #1a3a6e 100%)",
-                    padding: "18px 24px",
+                    padding: "20px 32px",
                     display: "flex",
                     alignItems: "center",
-                    gap: 20,
+                    gap: 28,
                     height: TOP1_BANNER_H,
                     flexShrink: 0,
                     opacity: gifFadeIn ? 1 : 0,
@@ -551,11 +553,11 @@ export default function Dashboard() {
 
                   <div
                     style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 12,
+                      width: 140,
+                      height: 140,
+                      borderRadius: 14,
                       overflow: "hidden",
-                      border: "3px solid #FF6B35",
+                      border: "4px solid #FF6B35",
                       flexShrink: 0,
                       background: "#0A1F44",
                     }}
@@ -575,7 +577,7 @@ export default function Dashboard() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          fontSize: 40,
+                          fontSize: 56,
                         }}
                       >
                         🎉
@@ -587,19 +589,19 @@ export default function Dashboard() {
                     <div
                       style={{
                         color: "#FF6B35",
-                        fontSize: 12,
+                        fontSize: 16,
                         fontWeight: 700,
                         textTransform: "uppercase",
                         letterSpacing: "0.12em",
-                        marginBottom: 6,
+                        marginBottom: 8,
                       }}
                     >
                       👑 #1 This Week
                     </div>
-                    <div style={{ color: "#fff", fontSize: 26, fontWeight: 800, lineHeight: 1.2 }}>
+                    <div style={{ color: "#fff", fontSize: 40, fontWeight: 800, lineHeight: 1.15 }}>
                       {top1.name}
                     </div>
-                    <div style={{ color: "#FF6B35", fontSize: 18, fontWeight: 700, marginTop: 6 }}>
+                    <div style={{ color: "#FF6B35", fontSize: 26, fontWeight: 700, marginTop: 8 }}>
                       {top1.meetings} meetings
                     </div>
                   </div>
@@ -644,23 +646,23 @@ export default function Dashboard() {
                       >
                         <th
                           style={{
-                            padding: "10px 24px",
+                            padding: "12px 32px",
                             textAlign: "left",
-                            fontSize: 13,
+                            fontSize: 17,
                             fontWeight: 700,
                             color: "#9CA3AF",
                             textTransform: "uppercase",
                             letterSpacing: "0.07em",
-                            width: 70,
+                            width: 100,
                           }}
                         >
                           Rank
                         </th>
                         <th
                           style={{
-                            padding: "10px 24px",
+                            padding: "12px 32px",
                             textAlign: "left",
-                            fontSize: 13,
+                            fontSize: 17,
                             fontWeight: 700,
                             color: "#9CA3AF",
                             textTransform: "uppercase",
@@ -671,14 +673,14 @@ export default function Dashboard() {
                         </th>
                         <th
                           style={{
-                            padding: "10px 24px",
+                            padding: "12px 32px",
                             textAlign: "right",
-                            fontSize: 13,
+                            fontSize: 17,
                             fontWeight: 700,
                             color: "#9CA3AF",
                             textTransform: "uppercase",
                             letterSpacing: "0.07em",
-                            width: 140,
+                            width: 180,
                           }}
                         >
                           Meetings
@@ -697,15 +699,15 @@ export default function Dashboard() {
                         >
                           <td
                             style={{
-                              padding: "13px 24px",
-                              fontSize: 15,
+                              padding: "16px 32px",
+                              fontSize: 22,
                               fontWeight: 700,
                               color: i === 0 ? "#D97706" : "#9CA3AF",
                             }}
                           >
                             {i === 0 ? (
                               <span style={{ display: "flex", alignItems: "center" }}>
-                                <span style={{ marginRight: 4 }}>👑</span>1
+                                <span style={{ marginRight: 6 }}>👑</span>1
                               </span>
                             ) : (
                               `#${i + 1}`
@@ -713,8 +715,8 @@ export default function Dashboard() {
                           </td>
                           <td
                             style={{
-                              padding: "13px 24px",
-                              fontSize: 15,
+                              padding: "16px 32px",
+                              fontSize: 24,
                               fontWeight: i === 0 ? 700 : 500,
                               color: i === 0 ? "#1A1A2E" : "#374151",
                             }}
@@ -723,9 +725,9 @@ export default function Dashboard() {
                           </td>
                           <td
                             style={{
-                              padding: "13px 24px",
+                              padding: "16px 32px",
                               textAlign: "right",
-                              fontSize: 16,
+                              fontSize: 28,
                               fontWeight: 800,
                               color: i === 0 ? "#FF6B35" : "#0A1F44",
                             }}
@@ -742,11 +744,14 @@ export default function Dashboard() {
               {/* footer */}
               <div
                 style={{
-                  padding: "8px 24px",
+                  padding: "0 32px",
+                  height: PANEL_FOOTER_H,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
                   borderTop: "1px solid #F0F0F0",
                   color: "#C4C9D4",
-                  fontSize: 12,
-                  textAlign: "right",
+                  fontSize: 14,
                   flexShrink: 0,
                 }}
               >
