@@ -1,0 +1,71 @@
+Build a single-page split-screen dashboard web app using HTML, CSS, and JavaScript only (no frameworks needed). The UI must be themed after GoComet (https://www.gocomet.com/) using their brand identity:
+
+**GoComet Brand Theme:**
+- Primary color: Deep Navy Blue → `#0A1F44`
+- Accent color: Bright Orange → `#FF6B35`
+- Secondary accent: Electric Blue → `#1E90FF`
+- Background: Light gray-white → `#F5F7FA`
+- Card/Panel background: Pure white → `#FFFFFF`
+- Text primary: `#1A1A2E`
+- Text secondary: `#6B7280`
+- Font: Use 'Inter' from Google Fonts (`https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap`)
+- Use GoComet's logo colors and style: clean, modern, professional, logistics/supply-chain SaaS feel
+- Header/Navbar should be Deep Navy (`#0A1F44`) with white text and an orange accent line or highlight
+- Buttons and highlights should use the Orange (`#FF6B35`) accent
+- Cards should have subtle box shadows and rounded corners (8–12px border radius)
+- Use thin orange top-border accents on panel headers to mimic GoComet's section styling
+
+Here is exactly what it should do:
+
+---
+
+## Layout
+- Full-viewport split screen: Left panel 60% (Leaderboard), Right panel 40% (Pipeline Graph), no scrolling, 100vh height.
+- A top navbar spanning full width with GoComet navy background, white "GoComet Dashboard" title on the left, and a small orange dot/badge showing "● LIVE" on the right.
+- Both panels sit below the navbar with a light gray background and white cards with shadow.
+- Each panel has a header bar with a 3px orange top border, panel title in navy, and the "Last updated" timestamp in gray on the right.
+
+---
+
+## Left Panel — Meetings Leaderboard
+
+- Fetch data from a Google Sheet published as CSV using this URL format:
+  `https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pub?gid=SHEET_TAB_ID&single=true&output=csv`
+- Parse the CSV and display a ranked leaderboard table showing: Rank, Name, and Meetings Count.
+- Sort by Meetings Count descending so the person with the most meetings is always #1.
+- The Google Sheet must have a third column called `GIF_URL` alongside `Name` and `Meetings`. Each rep's row should contain a Google Drive public link to their personal GIF or short video file.
+- When a rep is in the #1 position, fetch their `GIF_URL` from the sheet and display their custom GIF/video in a prominent overlay or banner at the top of the leaderboard panel. The GIF should autoplay, loop, and be displayed alongside their name and rank.
+- If the `GIF_URL` cell is empty for a rep, fall back to a default confetti burst CSS animation instead.
+- Whenever the #1 position changes (detected on refresh), re-trigger the GIF animation for the new #1 rep with a smooth fade-in transition.
+- Highlight the #1 row with a gold background and a small crown icon to make it stand out.
+- To use a Google Drive GIF, the sharing must be set to "Anyone with the link can view". The direct embed URL format to use in the code is: `https://drive.google.com/uc?export=view&id=FILE_ID` (extract FILE_ID from the share link).
+- Auto-refresh the leaderboard every 30 seconds by re-fetching the CSV.
+
+---
+
+## Right Panel — Pipeline Bar Graph
+
+- Fetch data from a second Google Sheet tab (or separate sheet) published as CSV using the same URL format.
+- Parse the CSV and render a bar chart using Chart.js (load it from CDN: https://cdn.jsdelivr.net/npm/chart.js).
+- The X-axis should show the category label (e.g. deal stage or person name) and the Y-axis should show the value (e.g. deal count or deal value).
+- The bar chart should have distinct colors per bar, clean axis labels, and a title at the top.
+- Auto-refresh the chart every 30 seconds by re-fetching the CSV and updating the chart data in place (no full page reload).
+
+---
+
+## Additional Requirements
+
+- Both panels must refresh independently every 30 seconds without reloading the page.
+- Add a small "Last updated: HH:MM:SS" timestamp at the bottom of each panel so the user knows when data was last fetched.
+- The app must work entirely in the browser with no backend server — all fetching is done client-side using the public Google Sheets CSV URLs.
+- Make the layout fully responsive so it also works reasonably on a tablet screen.
+- Add smooth fade-in animations when the leaderboard rows load.
+- Use clean, professional fonts (load from Google Fonts if needed).
+
+---
+
+## Placeholders to Replace
+- Replace `YOUR_SHEET_ID` with the actual Google Sheet ID from the URL.
+- Replace `SHEET_TAB_ID` with the `gid` value for each tab (found in the sheet URL).
+- The leaderboard sheet should have two columns: `Name` and `Meetings`.
+- The pipeline sheet should have two columns: `Label` and `Value`.
