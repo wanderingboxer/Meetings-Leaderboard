@@ -433,10 +433,7 @@ function PipelineChart({ data }: { data: PipelineRow[] }) {
               size: 16,
               weight: "700",
             },
-            formatter: (value: number) =>
-              value >= 1000
-                ? `${(value / 1000).toFixed(1)}k`
-                : value.toLocaleString(),
+            formatter: (value: number) => value.toLocaleString(),
           },
         },
         scales: {
